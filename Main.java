@@ -74,13 +74,16 @@ public class Main {
         int choice = sc.nextInt();
 
         if (choice == 1) {
+              SJF.run(processes);
             // Call Member 1's Preemptive SJF implementation here
             // SJF.run(processes);
         } else {
             System.out.print("Enter Quantum (Q): ");
             int quantum = sc.nextInt();
+            
             // Call Members 2, 3, and 4's ACS implementation here
             // ACS.run(processes, quantum);
+             ACSTier1.run(processes, quantum);
         }
 
         printTimeline();
