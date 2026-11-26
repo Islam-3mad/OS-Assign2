@@ -99,7 +99,7 @@ public class ACSTier1 {
                 next = pickNext();
                 inTier1 = true;
             } else if (!tier2.getQueue().isEmpty()) {
-                aging.applyAging(tier2, Main.currentTime);
+                    Main.timeline.addAll(aging.applyAging(tier2, Main.currentTime));
 
                 Map<Process, Integer> saved = new HashMap<>();
                 for (Process p : tier2.getQueue()) saved.put(p, p.startTime);
@@ -115,7 +115,7 @@ public class ACSTier1 {
 
           
             if (last != null && last != next) {
-                String msg = (last.remainingTime > 0)
+                    String msg = (inTier1 && last.remainingTime > 0)
                         ? "Context switch saves " + last.id + " and loads " + next.id
                         : "Context switch loads " + next.id;
                 for (int i = 0; i < Main.contextSwitchTime; i++) {
@@ -156,6 +156,7 @@ public class ACSTier1 {
         List<Process> t2 = new ArrayList<>();
         if (tier2Running != null) t2.add(tier2Running);
         t2.addAll(tier2.getQueue());
+        t2.sort(Comparator.comparingInt(p -> p.tier2EnterTime));
         Main.logStep(event, getDisplayQueue(), t2);
     }
     private void advance() {
